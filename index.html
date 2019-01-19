@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Arma 3 test map</title>
+	<script type="text/javascript" src="/leaflet/leaflet.js"></script>
+	<link rel="stylesheet" type="text/css" href="/leaflet/leaflet.css">
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0;
+		}
+
+		#map {
+			width: 100%;
+			height: 100%;
+		}
+
+		.text-labels {
+			white-space:nowrap;
+			text-shadow: 0 0 0.1em black, 0 0 0.1em black,
+			0 0 0.1em black,0 0 0.1em black,0 0 0.1em;
+			color: yellow
+		}
+	</style>
+</head>
+
+<body>
+	<div id="map"></div>
+	<script type="text/javascript">
+		const cities = [{ "posX": 11786.7, "posY": 18372.4, "posZ": -51.9314, "name": "Koroni" }, { "posX": 12787, "posY": 19679.3, "posZ": -46.1323, "name": "Ifestiona" }, { "posX": 10270.3, "posY": 19036, "posZ": -120.191, "name": "Galati" }, { "posX": 10410.4, "posY": 17243.1, "posZ": -82.7311, "name": "Orino" }, { "posX": 13993, "posY": 18709.4, "posZ": -25.735, "name": "Athira" }, { "posX": 12282, "posY": 15732.3, "posZ": -23.0026, "name": "Lakka" }, { "posX": 14479.8, "posY": 17614.3, "posZ": -21.6749, "name": "Gravia" }, { "posX": 9425.42, "posY": 20284, "posZ": -122.26, "name": "Abdera" }, { "posX": 8625.13, "posY": 18301.6, "posZ": -179.297, "name": "Syrta" }, { "posX": 12950.1, "posY": 15041.6, "posZ": -28.1891, "name": "Stavros" }, { "posX": 9187.95, "posY": 15947.8, "posZ": -124.829, "name": "Agios Dionysios" }, { "posX": 14612.5, "posY": 20786.7, "posZ": -47.0032, "name": "Frini" }, { "posX": 11112.6, "posY": 14573.7, "posZ": -42.5353, "name": "Alikampos" }, { "posX": 12502, "posY": 14337, "posZ": -11.5868, "name": "Neochori" }, { "posX": 16207, "posY": 17296.7, "posZ": -24.3308, "name": "Telos" }, { "posX": 11701.1, "posY": 13672.1, "posZ": -12.7303, "name": "Katalaki" }, { "posX": 10966.5, "posY": 13435.3, "posZ": -28.4601, "name": "Poliakko" }, { "posX": 7062.42, "posY": 16472.1, "posZ": -116.425, "name": "Kore" }, { "posX": 7375.81, "posY": 15429.5, "posZ": -54.782, "name": "Topolia" }, { "posX": 16584.3, "posY": 16104, "posZ": -15.1762, "name": "Anthrakia" }, { "posX": 16668.5, "posY": 20487, "posZ": -4.767, "name": "Agia Triada" }, { "posX": 17826.5, "posY": 18129.4, "posZ": -1.99341, "name": "Kalithea" }, { "posX": 10618.9, "posY": 12237.3, "posZ": -16.0326, "name": "Therisa" }, { "posX": 9091.81, "posY": 11961.9, "posZ": -19.9013, "name": "Zaros" }, { "posX": 18049.1, "posY": 15264.1, "posZ": -28.4237, "name": "Charkia" }, { "posX": 18753.4, "posY": 16597.1, "posZ": -32.1656, "name": "Rodopoli" }, { "posX": 4885.98, "posY": 16171.3, "posZ": -77.5036, "name": "Negades" }, { "posX": 19339.4, "posY": 17641.6, "posZ": -37.4067, "name": "Agios Petros" }, { "posX": 16780.6, "posY": 12604.5, "posZ": -18.9913, "name": "Pyrgos" }, { "posX": 4560.45, "posY": 21460.6, "posZ": -302.575, "name": "Oreokastro" }, { "posX": 3948.77, "posY": 17277.8, "posZ": -11.6385, "name": "Agios Konstantinos" }, { "posX": 19473.3, "posY": 15453.7, "posZ": -22.9098, "name": "Nifi" }, { "posX": 19336.9, "posY": 13252.3, "posZ": -37.8615, "name": "Dorida" }, { "posX": 20885.4, "posY": 16958.8, "posZ": -49.8089, "name": "Paros" }, { "posX": 3687.78, "posY": 13776.1, "posZ": -10.7639, "name": "Aggelochori" }, { "posX": 21351.6, "posY": 16361.9, "posZ": -20.5678, "name": "Kalochori" }, { "posX": 5033.31, "posY": 11245.2, "posZ": -48.317, "name": "Panochori" }, { "posX": 17059.7, "posY": 9992.32, "posZ": -21.8159, "name": "Ekali" }, { "posX": 3458.95, "posY": 12966.4, "posZ": -6.1822, "name": "Kavala" }, { "posX": 4116.11, "posY": 11736.1, "posZ": -50.8535, "name": "Neri" }, { "posX": 20194.6, "posY": 11660.7, "posZ": -45.8388, "name": "Chalkeia" }, { "posX": 23199.7, "posY": 19986.6, "posZ": -14.2541, "name": "Ioannina" }, { "posX": 23908.6, "posY": 20144.7, "posZ": -14.0692, "name": "Delfinaki" }, { "posX": 20490.2, "posY": 8907.12, "posZ": -34.5332, "name": "Panagia" }, { "posX": 25680.5, "posY": 21365.1, "posZ": -20.7333, "name": "Sofia" }, { "posX": 21640.7, "posY": 7583.93, "posZ": -14.1929, "name": "Feres" }, { "posX": 20769.8, "posY": 6736.46, "posZ": -37.9427, "name": "Selakano" }, { "posX": 26943.9, "posY": 23170.7, "posZ": -18.0848, "name": "Molos" }]
+		var sat = L.tileLayer('/sat/{z}/{x}/{y}.png', { //bzw .jpg
+			minZoom: 1,
+			noWrap: true,
+			maxZoom: 6,
+			attribution: 'Eure Attribution',
+			tms: true
+		});
+		var map = L.map('map', {
+			layers: [sat]
+		}).setView([0, 0], 1);
+		var baseLayers = {
+			"Satellit": sat
+		};
+		L.control.layers(baseLayers).addTo(map);
+		var controlLayers = L.control.layers(null, null, {
+			position: "bottomright",
+			collapsed: false
+		}).addTo(map);
+		var southWest = map.unproject([0, 16384], map.getMaxZoom()); //Original-Höhe
+		var northEast = map.unproject([16384, 0], map.getMaxZoom()); //Original-Breite
+		map.setMaxBounds(new L.LatLngBounds(southWest, northEast));
+	</script>
+	<script type="text/javascript">
+		// Coords bla shit
+		const scalingParams = {
+			dx: 15360.840480152909,
+			dy: 15359.809239934686,
+			kx: 0.0007666199147942156,
+			ky: 0.0007666580256024472,
+		};
+		function yxToCoords(posObj) {
+			const i = L.Projection.SphericalMercator;
+			let n = posObj.posX;
+			let o = posObj.posY;
+			const r = {
+				x: (n - scalingParams.dx) / scalingParams.kx,
+				y: (o - scalingParams.dy) / scalingParams.ky
+			};
+			return i.unproject(r)
+		}
+		cityMakers = new L.layerGroup().addTo(map);
+		controlLayers.addOverlay(cityMakers, 'Cities');
+		cities.forEach((city) => {
+			// Method #1:
+			// L.marker(yxToCoords(city)).addTo(map);
+
+			// Method #2:
+			// L.marker(yxToCoords(city), {
+			// 	icon: L.divIcon({
+			// 		className: 'text-labels',   // Set class for CSS styling
+			// 		html: city.name
+			// 	}),
+			// 	draggable: true,       // Allow label dragging...?
+			// 	zIndexOffset: 1000     // Make appear above other map features
+			// }).addTo(map);
+
+			//Method #3:
+			var divIcon = L.divIcon({
+				html: city.name,
+				className: "text-labels",
+			})
+			// L.circle(yxToCoords(city), {
+			// 	color: 'red',
+			// 	fillColor: '#f03',
+			// 	fillOpacity: 0.5,
+			// 	radius: 500000
+			// }).addTo(cityMakers	);
+			L.marker(yxToCoords(city), { icon: divIcon }).addTo(cityMakers)
+		})
+	</script>
+</body>
+
+</html>
